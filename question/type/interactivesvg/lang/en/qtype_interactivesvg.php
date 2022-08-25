@@ -35,13 +35,15 @@ $string['correctanswers'] = 'Correct answers';
 $string['filloutoneanswer'] = 'You must provide at least one possible answer. Answers left blank will not be used. \'*\' can be used as a wildcard to match any characters. The first matching answer will be used to determine the score and feedback.';
 $string['notenoughanswers'] = 'This type of question requires at least {$a} answers';
 $string['pleaseenterananswer'] = 'Please enter an answer.';
-$string['pluginname'] = 'Interactive SVG';
+$string['pluginname'] = 'Biber';
 $string['pluginname_help'] = 'In response to a question (that may include an image) the respondent types a word or short phrase. There may be several possible correct answers, each with a different grade. If the "Case sensitive" option is selected, then you can have different scores for "Word" or "word".';
 $string['pluginname_link'] = 'question/type/interactivesvg';
-$string['pluginnameadding'] = 'Adding an interactive SVG question';
-$string['pluginnameediting'] = 'Editing an interactive SVG question';
-$string['pluginnamesummary'] = 'Allows for interactive SVG questions using JS. This plugin is designed for Bebras (Informatik-Biber) tasks.';
-$string['privacy:metadata'] = 'Interactive SVG question type plugin allows question authors to set default options as user preferences.';
+$string['pluginnameadding'] = 'Adding a Biber question';
+$string['pluginnameediting'] = 'Editing a Biber question';
+$string['pluginnamesummary'] = 'Allows for Bebras (Informatik-Biber) questions using JS. This plugin is designed for Bebras (Informatik-Biber) tasks. Ask your administrator where to get them.
+
+You should not manually add or modify a task of this type.';
+$string['privacy:metadata'] = 'Biber question type plugin allows question authors to set default options as user preferences.';
 $string['privacy:preference:defaultmark'] = 'The default mark set for a given question.';
 $string['privacy:preference:penalty'] = 'The penalty for each incorrect try when questions are run using the \'Interactive with multiple tries\' or \'Adaptive mode\' behaviour.';
 $string['privacy:preference:usecase'] = 'Whether the answers should be case sensitive.';

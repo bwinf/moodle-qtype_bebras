@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<libraries>
+    <library>
+        <location>graders/</location>
+        <name>Biber Graders</name>
+        <version>0.1</version>
+        <license><!--TBD--></license>
+        <licenseversion><!--TBD--></licenseversion>
+    </library>
+</libraries>

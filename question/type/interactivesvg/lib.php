@@ -20,6 +20,8 @@
  * @since      Moodle 2.0
  * @package    qtype_interactivesvg
  * @copyright  Dongsheng Cai <dongsheng@moodle.com>
+ * @copyright  2021 BWINF
+ * @author     Manuel Gundlach
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

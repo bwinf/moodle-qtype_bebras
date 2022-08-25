@@ -20,6 +20,8 @@
  * @package    qtype
  * @subpackage interactivesvg
  * @copyright  2007 Jamie Pratt
+ * @copyright  2021 BWINF
+ * @author     Manuel Gundlach
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -31,6 +33,8 @@ defined('MOODLE_INTERNAL') || die();
  * Interactive SVG question editing form definition.
  *
  * @copyright  2007 Jamie Pratt
+ * @copyright  2021 BWINF
+ * @author     Manuel Gundlach
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_interactivesvg_edit_form extends question_edit_form {
