@@ -45,7 +45,8 @@ class qtype_interactivesvg_renderer extends qtype_renderer {
         $currentanswer = $qa->get_last_qt_var('answer');
 
         // Differentiate between generic and some special graders
-        if(str_starts_with($question->format_questiontext($qa), "<!--[Connector-Grader]-->")){
+        $conngraderstr = "<!--[Connector-Grader]-->";
+        if(substr($question->format_questiontext($qa), 0,  strlen($conngraderstr)) === $conngraderstr){
             if(!$currentanswer || $currentanswer === ""){
                 $currentanswer = '[]';
             }else{
