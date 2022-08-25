@@ -15,18 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Short answer question type version information.
+ * Interactive SVG question type version information.
  *
  * @package    qtype
- * @subpackage shortanswer
+ * @subpackage interactivesvg
  * @copyright  1999 onwards Martin Dougiamas {@link http://moodle.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'qtype_shortanswer';
-$plugin->version   = 2021051700;
+$plugin->component = 'qtype_interactivesvg';
+$plugin->version   = 2021100500;
 
 $plugin->requires  = 2021051100;
 

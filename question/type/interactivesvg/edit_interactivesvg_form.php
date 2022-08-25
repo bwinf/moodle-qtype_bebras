@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines the editing form for the shortanswer question type.
+ * Defines the editing form for the interactive SVG question type.
  *
  * @package    qtype
- * @subpackage shortanswer
+ * @subpackage interactivesvg
  * @copyright  2007 Jamie Pratt
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,35 +28,35 @@ defined('MOODLE_INTERNAL') || die();
 
 
 /**
- * Short answer question editing form definition.
+ * Interactive SVG question editing form definition.
  *
  * @copyright  2007 Jamie Pratt
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_shortanswer_edit_form extends question_edit_form {
+class qtype_interactivesvg_edit_form extends question_edit_form {
 
     protected function definition_inner($mform) {
         $menu = [
-            get_string('caseno', 'qtype_shortanswer'),
-            get_string('caseyes', 'qtype_shortanswer')
+            get_string('caseno', 'qtype_interactivesvg'),
+            get_string('caseyes', 'qtype_interactivesvg')
         ];
         $mform->addElement('select', 'usecase',
-                get_string('casesensitive', 'qtype_shortanswer'), $menu);
+                get_string('casesensitive', 'qtype_interactivesvg'), $menu);
         $mform->setDefault('usecase', $this->get_default_value('usecase', $menu[0]));
 
         $mform->addElement('static', 'answersinstruct',
-                get_string('correctanswers', 'qtype_shortanswer'),
-                get_string('filloutoneanswer', 'qtype_shortanswer'));
+                get_string('correctanswers', 'qtype_interactivesvg'),
+                get_string('filloutoneanswer', 'qtype_interactivesvg'));
         $mform->closeHeaderBefore('answersinstruct');
 
-        $this->add_per_answer_fields($mform, get_string('answerno', 'qtype_shortanswer', '{no}'),
+        $this->add_per_answer_fields($mform, get_string('answerno', 'qtype_interactivesvg', '{no}'),
                 question_bank::fraction_options());
 
         $this->add_interactive_settings();
     }
 
     protected function get_more_choices_string() {
-        return get_string('addmoreanswerblanks', 'qtype_shortanswer');
+        return get_string('addmoreanswerblanks', 'qtype_interactivesvg');
     }
 
     protected function data_preprocessing($question) {
@@ -81,12 +81,12 @@ class qtype_shortanswer_edit_form extends question_edit_form {
                 }
             } else if ($data['fraction'][$key] != 0 ||
                     !html_is_blank($data['feedback'][$key]['text'])) {
-                $errors["answeroptions[{$key}]"] = get_string('answermustbegiven', 'qtype_shortanswer');
+                $errors["answeroptions[{$key}]"] = get_string('answermustbegiven', 'qtype_interactivesvg');
                 $answercount++;
             }
         }
         if ($answercount==0) {
-            $errors['answeroptions[0]'] = get_string('notenoughanswers', 'qtype_shortanswer', 1);
+            $errors['answeroptions[0]'] = get_string('notenoughanswers', 'qtype_interactivesvg', 1);
         }
         if ($maxgrade == false) {
             $errors['answeroptions[0]'] = get_string('fractionsnomax', 'question');
@@ -95,6 +95,6 @@ class qtype_shortanswer_edit_form extends question_edit_form {
     }
 
     public function qtype() {
-        return 'shortanswer';
+        return 'interactivesvg';
     }
 }

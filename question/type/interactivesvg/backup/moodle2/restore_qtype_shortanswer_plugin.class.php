@@ -28,16 +28,16 @@ require_once($CFG->dirroot . '/backup/moodle2/restore_qtype_extrafields_plugin.c
 
 /**
  * Restore plugin class that provides the necessary information
- * needed to restore one shortanswer qtype plugin
+ * needed to restore one interactivesvg qtype plugin
  *
  * @copyright  2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class restore_qtype_shortanswer_plugin extends restore_qtype_extrafields_plugin {
+class restore_qtype_interactivesvg_plugin extends restore_qtype_extrafields_plugin {
     /**
-     * Process the qtype/shortanswer element
+     * Process the qtype/interactivesvg element
      */
-    public function process_shortanswer($data) {
+    public function process_interactivesvg($data) {
         $this->really_process_extra_question_fields($data);
     }
 }

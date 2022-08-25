@@ -15,11 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Short answer question renderer class.
+ * Interactive SVG question renderer class.
  *
  * @package    qtype
- * @subpackage shortanswer
+ * @subpackage interactivesvg
  * @copyright  2009 The Open University
+ * @copyright  2021 BWINF
+ * @author     Manuel Gundlach
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,31 +30,51 @@ defined('MOODLE_INTERNAL') || die();
 
 
 /**
- * Generates the output for short answer questions.
+ * Generates the output for interactive SVG questions.
  *
  * @copyright  2009 The Open University
+ * @copyright  2021 BWINF
+ * @author     Manuel Gundlach
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_shortanswer_renderer extends qtype_renderer {
+class qtype_interactivesvg_renderer extends qtype_renderer {
     public function formulation_and_controls(question_attempt $qa,
             question_display_options $options) {
 
         $question = $qa->get_question();
         $currentanswer = $qa->get_last_qt_var('answer');
 
+        // Differentiate between generic and some special graders
+        if(str_starts_with($question->format_questiontext($qa), "<!--[Connector-Grader]-->")){
+            if(!$currentanswer || $currentanswer === ""){
+                $currentanswer = '[]';
+            }else{
+                $currentanswer = urldecode($currentanswer);
+                // "'\ are removed
+                $currentanswer = str_replace(array('"', "'", "\\"), "", $currentanswer);
+            }
+        }
+        else{
+            $currentanswer = urldecode($currentanswer);
+        }
+
         $inputname = $qa->get_qt_field_name('answer');
+
+        // Remove scratch value from the answer and provide it separately
+        $currentscratch = "";
+        if(strpos($currentanswer, "!!!!!")){
+            $currentscratch = substr($currentanswer, strpos($currentanswer, "!!!!!")+5);
+            $currentanswer = substr($currentanswer, 0, strpos($currentanswer, "!!!!!"));
+        }
+
         $inputattributes = array(
             'type' => 'text',
             'name' => $inputname,
             'value' => $currentanswer,
             'id' => $inputname,
-            'size' => 80,
             'class' => 'form-control d-inline',
+            'readonly' => 'readonly',
         );
-
-        if ($options->readonly) {
-            $inputattributes['readonly'] = 'readonly';
-        }
 
         $feedbackimg = '';
         if ($options->correctness) {
@@ -67,36 +89,58 @@ class qtype_shortanswer_renderer extends qtype_renderer {
         }
 
         $questiontext = $question->format_questiontext($qa);
-        $placeholder = false;
-        if (preg_match('/_____+/', $questiontext, $matches)) {
-            $placeholder = $matches[0];
-            $inputattributes['size'] = round(strlen($placeholder) * 1.1);
-        }
-        $input = html_writer::empty_tag('input', $inputattributes) . $feedbackimg;
 
-        if ($placeholder) {
-            $inputinplace = html_writer::tag('label', get_string('answer'),
-                    array('for' => $inputattributes['id'], 'class' => 'accesshide'));
-            $inputinplace .= $input;
-            $questiontext = substr_replace($questiontext, $inputinplace,
-                    strpos($questiontext, $placeholder), strlen($placeholder));
-        }
+        // Replace all occurences of {Q-ID} in question text with the input id,
+        // where : is replaced with _
+        $inputinplace = $inputattributes['id'];
+        $inputinplace = str_replace(':', '_', $inputinplace);
+        $questiontext = str_replace('{Q-ID}', $inputinplace, $questiontext);
+
+        // Replace all occurences of {CURRENT-ANSWER} in question text with the current answer
+        $questiontext = str_replace('{CURRENT-ANSWER}', json_encode($currentanswer), $questiontext);
+        // Replace all occurences of {CURRENT-SCRATCH} in question text with the current scratch
+        $questiontext = str_replace('{CURRENT-SCRATCH}', json_encode($currentscratch), $questiontext);
+
+        // Scratch input
+        $scratchinputattributes = array(
+            'type' => 'text',
+            'name' => "scratch_" . $inputinplace,
+            'value' => $currentscratch,
+            'id' => "scratch_" . $inputinplace,
+            'class' => 'form-control d-inline',
+            'readonly' => 'readonly',
+        );
+
+        $input = html_writer::empty_tag('input', $inputattributes) . $feedbackimg . html_writer::empty_tag('input', $scratchinputattributes);
 
         $result = html_writer::tag('div', $questiontext, array('class' => 'qtext'));
 
-        if (!$placeholder) {
-            $result .= html_writer::start_tag('div', array('class' => 'ablock form-inline'));
-            $result .= html_writer::tag('label', get_string('answer', 'qtype_shortanswer',
-                    html_writer::tag('span', $input, array('class' => 'answer'))),
-                    array('for' => $inputattributes['id']));
-            $result .= html_writer::end_tag('div');
-        }
+        $result .= html_writer::start_tag('div', array('class' => 'ablock form-inline hidden'));
+        $result .= html_writer::tag('label', get_string('answer', 'qtype_interactivesvg',
+                html_writer::tag('span', $input, array('class' => 'answer'))),
+                array('for' => $inputattributes['id']));
+        $result .= html_writer::end_tag('div');
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
                     $question->get_validation_error(array('answer' => $currentanswer)),
                     array('class' => 'validationerror'));
         }
+
+        $scr = 'document.addEventListener("DOMContentLoaded", function(event) {';
+        $scr .= 'document.querySelectorAll("[id=id_save_question_preview], [id=id_finish_question_preview], [id=mod_quiz-prev-nav], [id=mod_quiz-next-nav]").
+                forEach(function(button_id){
+                    button_id.addEventListener("click", function() {
+                        let answerfield = document.getElementById("' . $inputattributes['id'] . '");
+                        answerfield.value=escape(getAnswer_' . $inputinplace . '());
+                        if(typeof getScratch_' . $inputinplace . ' === "function"){
+                            answerfield.value += "!!!!!" + escape(getScratch_' . $inputinplace . '());
+                        }
+                    });
+                });
+            ';
+        $scr .= '});';
+        $result .= html_writer::tag('script', $scr);
 
         return $result;
     }
@@ -114,14 +158,6 @@ class qtype_shortanswer_renderer extends qtype_renderer {
     }
 
     public function correct_response(question_attempt $qa) {
-        $question = $qa->get_question();
-
-        $answer = $question->get_matching_answer($question->get_correct_response());
-        if (!$answer) {
-            return '';
-        }
-
-        return get_string('correctansweris', 'qtype_shortanswer',
-                s($question->clean_response($answer->answer)));
+        return '';
     }
 }

@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy Subsystem implementation for qtype_shortanswer.
+ * Privacy Subsystem implementation for qtype_interactivesvg.
  *
- * @package    qtype_shortanswer
+ * @package    qtype_interactivesvg
  * @copyright  2018 Andrew Nicols <andrew@nicols.co.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_shortanswer\privacy;
+namespace qtype_interactivesvg\privacy;
 
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\transform;
@@ -31,7 +31,7 @@ use core_privacy\local\request\writer;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Privacy Subsystem for qtype_shortanswer implementing user_preference_provider.
+ * Privacy Subsystem for qtype_interactivesvg implementing user_preference_provider.
  *
  * @copyright  2018 Andrew Nicols <andrew@nicols.co.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -50,9 +50,9 @@ class provider implements
      * @return  collection     A listing of user data stored through this system.
      */
     public static function get_metadata(collection $collection) : collection {
-        $collection->add_user_preference('qtype_shortanswer_defaultmark', 'privacy:preference:defaultmark');
-        $collection->add_user_preference('qtype_shortanswer_penalty', 'privacy:preference:penalty');
-        $collection->add_user_preference('qtype_shortanswer_usecase', 'privacy:preference:usecase');
+        $collection->add_user_preference('qtype_interactivesvg_defaultmark', 'privacy:preference:defaultmark');
+        $collection->add_user_preference('qtype_interactivesvg_penalty', 'privacy:preference:penalty');
+        $collection->add_user_preference('qtype_interactivesvg_usecase', 'privacy:preference:usecase');
         return $collection;
     }
 
@@ -62,27 +62,27 @@ class provider implements
      * @param int $userid The userid of the user whose data is to be exported.
      */
     public static function export_user_preferences(int $userid) {
-        $preference = get_user_preferences('qtype_shortanswer_defaultmark', null, $userid);
+        $preference = get_user_preferences('qtype_interactivesvg_defaultmark', null, $userid);
         if (null !== $preference) {
-            $desc = get_string('privacy:preference:defaultmark', 'qtype_shortanswer');
-            writer::export_user_preference('qtype_shortanswer', 'defaultmark', $preference, $desc);
+            $desc = get_string('privacy:preference:defaultmark', 'qtype_interactivesvg');
+            writer::export_user_preference('qtype_interactivesvg', 'defaultmark', $preference, $desc);
         }
 
-        $preference = get_user_preferences('qtype_shortanswer_penalty', null, $userid);
+        $preference = get_user_preferences('qtype_interactivesvg_penalty', null, $userid);
         if (null !== $preference) {
-            $desc = get_string('privacy:preference:penalty', 'qtype_shortanswer');
-            writer::export_user_preference('qtype_shortanswer', 'penalty', transform::percentage($preference), $desc);
+            $desc = get_string('privacy:preference:penalty', 'qtype_interactivesvg');
+            writer::export_user_preference('qtype_interactivesvg', 'penalty', transform::percentage($preference), $desc);
         }
 
-        $preference = get_user_preferences('qtype_shortanswer_usecase', null, $userid);
+        $preference = get_user_preferences('qtype_interactivesvg_usecase', null, $userid);
         if (null !== $preference) {
-            $desc = get_string('privacy:preference:usecase', 'qtype_shortanswer');
+            $desc = get_string('privacy:preference:usecase', 'qtype_interactivesvg');
             if ($preference) {
-                $strvalue = get_string('caseyes', 'qtype_shortanswer');
+                $strvalue = get_string('caseyes', 'qtype_interactivesvg');
             } else {
-                $strvalue = get_string('caseno', 'qtype_shortanswer');
+                $strvalue = get_string('caseno', 'qtype_interactivesvg');
             }
-            writer::export_user_preference('qtype_shortanswer', 'shuffleanswers', $strvalue, $desc);
+            writer::export_user_preference('qtype_interactivesvg', 'shuffleanswers', $strvalue, $desc);
         }
     }
 }
