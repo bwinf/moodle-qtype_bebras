@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qtype_interactivesvg';
-$plugin->version   = 2022070500;
+$plugin->version   = 2022100800;
 
 $plugin->requires  = 2021051100;
 

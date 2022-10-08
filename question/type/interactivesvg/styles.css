@@ -40,3 +40,16 @@ body#page-question-type-interactivesvg div[id^=fitem_id_][id*=feedback_] {
     border: 1px solid #bbb;
     border-top: 0;
 }
+
+/* Modified width of Moodle quiz layout */
+@media (min-width: 768px) {
+    #page-header {
+        max-width: 953.5px !important;
+    }
+    .secondary-navigation {
+        max-width: 953.5px !important;
+    }
+    .pagelayout-standard #page.drawers .main-inner, body.limitedwidth #page.drawers .main-inner {
+        max-width: 953.5px !important;
+    }
+}
