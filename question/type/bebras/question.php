@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Interactive SVG question definition class.
+ * Bebras question definition class.
  *
  * @package    qtype
- * @subpackage interactivesvg
+ * @subpackage bebras
  * @copyright  2009 The Open University
  * @copyright  2021 BWINF
  * @author     Manuel Gundlach
@@ -32,14 +32,14 @@ require_once($CFG->dirroot . '/question/type/questionbase.php');
 require_once($CFG->dirroot . '/question/type/shortanswer/question.php');
 
 /**
- * Represents an interactive SVG question.
+ * Represents a bebras question.
  *
  * @copyright  2009 The Open University
  * @copyright  2021 BWINF
  * @author     Manuel Gundlach
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_interactivesvg_question extends qtype_shortanswer_question
+class qtype_bebras_question extends qtype_shortanswer_question
         implements question_response_answer_comparer {
     private function is_correct(string $grader, ?string $currentanswer,
                                 ?string $correctanswer) {
@@ -80,7 +80,7 @@ class qtype_interactivesvg_question extends qtype_shortanswer_question
         if ($this->is_gradable_response($response)) {
             return '';
         }
-        return get_string('pleaseenterananswer', 'qtype_interactivesvg');
+        return get_string('pleaseenterananswer', 'qtype_bebras');
     }
 
     public function compare_response_with_answer(array $response, question_answer $answer) {

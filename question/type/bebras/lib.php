@@ -18,7 +18,7 @@
  * Serve question type files
  *
  * @since      Moodle 2.0
- * @package    qtype_interactivesvg
+ * @package    qtype_bebras
  * @copyright  Dongsheng Cai <dongsheng@moodle.com>
  * @copyright  2021 BWINF
  * @author     Manuel Gundlach
@@ -30,8 +30,8 @@ defined('MOODLE_INTERNAL') || die();
 
 
 /**
- * Checks file access for interactive SVG questions.
- * @package  qtype_interactivesvg
+ * Checks file access for bebras questions.
+ * @package  qtype_bebras
  * @category files
  * @param stdClass $course course object
  * @param stdClass $cm course module object
@@ -42,8 +42,8 @@ defined('MOODLE_INTERNAL') || die();
  * @param array $options additional options affecting the file serving
  * @return bool
  */
-function qtype_interactivesvg_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+function qtype_bebras_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
     global $DB, $CFG;
     require_once($CFG->libdir . '/questionlib.php');
-    question_pluginfile($course, $context, 'qtype_interactivesvg', $filearea, $args, $forcedownload, $options);
+    question_pluginfile($course, $context, 'qtype_bebras', $filearea, $args, $forcedownload, $options);
 }

@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'qtype_interactivesvg', language 'en', branch 'MOODLE_20_STABLE'
+ * Strings for component 'qtype_bebras', language 'en', branch 'MOODLE_20_STABLE'
  *
  * @package    qtype
- * @subpackage interactivesvg
+ * @subpackage bebras
  * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -37,7 +37,7 @@ $string['notenoughanswers'] = 'This type of question requires at least {$a} answ
 $string['pleaseenterananswer'] = 'Please enter an answer.';
 $string['pluginname'] = 'Biber';
 $string['pluginname_help'] = 'In response to a question (that may include an image) the respondent types a word or short phrase. There may be several possible correct answers, each with a different grade. If the "Case sensitive" option is selected, then you can have different scores for "Word" or "word".';
-$string['pluginname_link'] = 'question/type/interactivesvg';
+$string['pluginname_link'] = 'question/type/bebras';
 $string['pluginnameadding'] = 'Adding a Biber question';
 $string['pluginnameediting'] = 'Editing a Biber question';
 $string['pluginnamesummary'] = 'Allows for Bebras (Informatik-Biber) questions using JS. This plugin is designed for Bebras (Informatik-Biber) tasks. Ask your administrator where to get them.

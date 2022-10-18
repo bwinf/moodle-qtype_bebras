@@ -18,7 +18,7 @@
  * Defines the editing form for the interactive SVG question type.
  *
  * @package    qtype
- * @subpackage interactivesvg
+ * @subpackage bebras
  * @copyright  2007 Jamie Pratt
  * @copyright  2021 BWINF
  * @author     Manuel Gundlach
@@ -37,30 +37,30 @@ defined('MOODLE_INTERNAL') || die();
  * @author     Manuel Gundlach
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_interactivesvg_edit_form extends question_edit_form {
+class qtype_bebras_edit_form extends question_edit_form {
 
     protected function definition_inner($mform) {
         $menu = [
-            get_string('caseno', 'qtype_interactivesvg'),
-            get_string('caseyes', 'qtype_interactivesvg')
+            get_string('caseno', 'qtype_bebras'),
+            get_string('caseyes', 'qtype_bebras')
         ];
         $mform->addElement('select', 'usecase',
-                get_string('casesensitive', 'qtype_interactivesvg'), $menu);
+                get_string('casesensitive', 'qtype_bebras'), $menu);
         $mform->setDefault('usecase', $this->get_default_value('usecase', $menu[0]));
 
         $mform->addElement('static', 'answersinstruct',
-                get_string('correctanswers', 'qtype_interactivesvg'),
-                get_string('filloutoneanswer', 'qtype_interactivesvg'));
+                get_string('correctanswers', 'qtype_bebras'),
+                get_string('filloutoneanswer', 'qtype_bebras'));
         $mform->closeHeaderBefore('answersinstruct');
 
-        $this->add_per_answer_fields($mform, get_string('answerno', 'qtype_interactivesvg', '{no}'),
+        $this->add_per_answer_fields($mform, get_string('answerno', 'qtype_bebras', '{no}'),
                 question_bank::fraction_options());
 
         $this->add_interactive_settings();
     }
 
     protected function get_more_choices_string() {
-        return get_string('addmoreanswerblanks', 'qtype_interactivesvg');
+        return get_string('addmoreanswerblanks', 'qtype_bebras');
     }
 
     protected function data_preprocessing($question) {
@@ -85,12 +85,12 @@ class qtype_interactivesvg_edit_form extends question_edit_form {
                 }
             } else if ($data['fraction'][$key] != 0 ||
                     !html_is_blank($data['feedback'][$key]['text'])) {
-                $errors["answeroptions[{$key}]"] = get_string('answermustbegiven', 'qtype_interactivesvg');
+                $errors["answeroptions[{$key}]"] = get_string('answermustbegiven', 'qtype_bebras');
                 $answercount++;
             }
         }
         if ($answercount==0) {
-            $errors['answeroptions[0]'] = get_string('notenoughanswers', 'qtype_interactivesvg', 1);
+            $errors['answeroptions[0]'] = get_string('notenoughanswers', 'qtype_bebras', 1);
         }
         if ($maxgrade == false) {
             $errors['answeroptions[0]'] = get_string('fractionsnomax', 'question');
@@ -99,6 +99,6 @@ class qtype_interactivesvg_edit_form extends question_edit_form {
     }
 
     public function qtype() {
-        return 'interactivesvg';
+        return 'bebras';
     }
 }

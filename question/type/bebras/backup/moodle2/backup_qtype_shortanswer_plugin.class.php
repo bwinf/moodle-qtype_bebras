@@ -15,27 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Upgrade library code for the interactivesvg question type.
- *
- * @package    qtype
- * @subpackage interactivesvg
- * @copyright  2010 The Open University
+ * @package    moodlecore
+ * @subpackage backup-moodle2
+ * @copyright  2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/question/type/shortanswer/db/upgradelib.php');
-
 /**
- * Class for converting attempt data for interactivesvg questions when upgrading
- * attempts to the new question engine.
+ * Provides the information to backup bebras questions
  *
- * This class is used by the code in question/engine/upgrade/upgradelib.php.
- *
- * @copyright  2010 The Open University
+ * @copyright  2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_interactivesvg_qe2_attempt_updater extends qtype_shortanswer_qe2_attempt_updater {
+class backup_qtype_bebras_plugin extends backup_qtype_extrafields_plugin {
 }

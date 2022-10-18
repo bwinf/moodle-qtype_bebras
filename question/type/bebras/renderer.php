@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Interactive SVG question renderer class.
+ * Bebras question renderer class.
  *
  * @package    qtype
- * @subpackage interactivesvg
+ * @subpackage bebras
  * @copyright  2009 The Open University
  * @copyright  2021 BWINF
  * @author     Manuel Gundlach
@@ -30,14 +30,14 @@ defined('MOODLE_INTERNAL') || die();
 
 
 /**
- * Generates the output for interactive SVG questions.
+ * Generates the output for bebras questions.
  *
  * @copyright  2009 The Open University
  * @copyright  2021 BWINF
  * @author     Manuel Gundlach
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_interactivesvg_renderer extends qtype_renderer {
+class qtype_bebras_renderer extends qtype_renderer {
     private function get_task_creator(string $grader, ?string $currentanswer,
                                       ?string $currentscratch, ?bool $can_save,
                                       ?array $args) {

@@ -15,17 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Interactive SVG question type version information.
+ * Bebras question type version information.
  *
  * @package    qtype
- * @subpackage interactivesvg
+ * @subpackage bebras
  * @copyright  1999 onwards Martin Dougiamas {@link http://moodle.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'qtype_interactivesvg';
+$plugin->component = 'qtype_bebras';
 $plugin->version   = 2022100800;
 
 $plugin->requires  = 2021051100;

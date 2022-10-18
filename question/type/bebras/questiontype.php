@@ -15,29 +15,35 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    moodlecore
- * @subpackage backup-moodle2
- * @copyright  2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
+ * Question type class for the bebras question type.
+ *
+ * @package    qtype
+ * @subpackage bebras
+ * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @copyright  2021 BWINF
+ * @author     Manuel Gundlach
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 
 defined('MOODLE_INTERNAL') || die();
 
-global $CFG;
-require_once($CFG->dirroot . '/backup/moodle2/restore_qtype_extrafields_plugin.class.php');
+require_once($CFG->libdir . '/questionlib.php');
+require_once($CFG->dirroot . '/question/engine/lib.php');
+require_once($CFG->dirroot . '/question/type/shortanswer/questiontype.php');
+require_once($CFG->dirroot . '/question/type/bebras/question.php');
+
 
 /**
- * Restore plugin class that provides the necessary information
- * needed to restore one interactivesvg qtype plugin
+ * The bebras question type.
  *
- * @copyright  2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
+ * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @copyright  2021 BWINF
+ * @author     Manuel Gundlach
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class restore_qtype_interactivesvg_plugin extends restore_qtype_extrafields_plugin {
-    /**
-     * Process the qtype/interactivesvg element
-     */
-    public function process_interactivesvg($data) {
-        $this->really_process_extra_question_fields($data);
+class qtype_bebras extends qtype_shortanswer {
+    public function extra_question_fields() {
+        return array('qtype_bebras_options', 'usecase');
     }
 }

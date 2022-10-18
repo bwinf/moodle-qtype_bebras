@@ -16,7 +16,7 @@
 
 /**
  * @package    qtype
- * @subpackage interactivesvg
+ * @subpackage bebras
  * @copyright  2011 David Mudrak <david@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -24,9 +24,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Interactive SVG question type conversion handler
+ * Bebras question type conversion handler
  */
-class moodle1_qtype_interactivesvg_handler extends moodle1_qtype_handler {
+class moodle1_qtype_bebras_handler extends moodle1_qtype_handler {
 
     /**
      * @return array
@@ -34,12 +34,12 @@ class moodle1_qtype_interactivesvg_handler extends moodle1_qtype_handler {
     public function get_question_subpaths() {
         return array(
             'ANSWERS/ANSWER',
-            'INTERACTIVESVG',
+            'BEBRAS',
         );
     }
 
     /**
-     * Appends the interactivesvg specific information to the question
+     * Appends the bebras specific information to the question
      */
     public function process_question(array $data, array $raw) {
 
@@ -48,10 +48,10 @@ class moodle1_qtype_interactivesvg_handler extends moodle1_qtype_handler {
             $this->write_answers($data['answers'], $this->pluginname);
         }
 
-        // Convert and write the interactivesvg extra fields.
-        foreach ($data['interactivesvg'] as $interactivesvg) {
-            $interactivesvg['id'] = $this->converter->get_nextid();
-            $this->write_xml('interactivesvg', $interactivesvg, array('/interactivesvg/id'));
+        // Convert and write the bebras extra fields.
+        foreach ($data['bebras'] as $bebras) {
+            $bebras['id'] = $this->converter->get_nextid();
+            $this->write_xml('bebras', $bebras, array('/bebras/id'));
         }
     }
 }
