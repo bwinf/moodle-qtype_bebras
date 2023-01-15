@@ -169,7 +169,7 @@ class qtype_bebras_renderer extends qtype_renderer {
         $inputinplace = $inputattributes['id'];
         $inputinplace = str_replace(':', '_', $inputinplace);
 
-        // Scratch input
+        // Scratch input.
         $scratchinputattributes = array(
             'type' => 'text',
             'name' => "scratch_" . $inputinplace,
