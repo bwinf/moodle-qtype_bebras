@@ -17,7 +17,7 @@
 /**
  * Bebras question definition class.
  *
- * @package    qtype
+ * @package    qtype_bebras
  * @subpackage bebras
  * @copyright  2009 The Open University
  * @copyright  2021 BWINF

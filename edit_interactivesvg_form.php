@@ -17,7 +17,7 @@
 /**
  * Defines the editing form for the interactive SVG question type.
  *
- * @package    qtype
+ * @package    qtype_bebras
  * @subpackage bebras
  * @copyright  2007 Jamie Pratt
  * @copyright  2021 BWINF
