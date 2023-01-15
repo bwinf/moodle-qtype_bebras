@@ -39,10 +39,11 @@ require_once($CFG->dirroot . '/question/type/shortanswer/question.php');
  * @author     Manuel Gundlach
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_bebras_question extends qtype_shortanswer_question
-        implements question_response_answer_comparer {
-    private function is_correct(string $grader, ?string $currentanswer,
-                                ?string $correctanswer) {
+class qtype_bebras_question extends qtype_shortanswer_question implements question_response_answer_comparer {
+    private function is_correct(
+        string $grader, ?string $currentanswer,
+        ?string $correctanswer
+    ) {
         $in = ['answer' => $currentanswer];
         // Hack: We set the list correct_answers to contain only the element
         // $correctanswer, so the grader will only consider this one and we know
@@ -50,30 +51,30 @@ class qtype_bebras_question extends qtype_shortanswer_question
         $args['correct_answers'] = [$correctanswer];
         $mode = 'grade';
         $graderfile = 'graders/' . $grader . '.grader.php';
-        if (!include $graderfile) {
+        if (!include($graderfile)) {
             die('Error: Grader missing');
         }
         return $out == 'correct';
     }
-    
+
     public function get_grader(string $questiontext) {
-        // Parse grader
+        // Parse grader.
         $in0 = strpos($questiontext, "{GRADER-START}");
         $in1 = strpos($questiontext, "{GRADER-END}");
-        $grader = substr($questiontext, $in0+14, $in1-$in0-14);
-    
-        return array($grader, $in0, $in1+12);
+        $grader = substr($questiontext, $in0 + 14, $in1 - $in0 - 14);
+
+        return array($grader, $in0, $in1 + 12);
     }
-    
+
     public function get_args(string $questiontext) {
-        // Parse arguments
+        // Parse arguments.
         $in0 = strpos($questiontext, "{ARGS-START}");
         $in1 = strpos($questiontext, "{ARGS-END}");
-        $args_text = substr($questiontext, $in0+12, $in1-$in0-12);
-        
-        $args = json_decode($args_text, true);
+        $argstext = substr($questiontext, $in0 + 12, $in1 - $in0 - 12);
 
-        return array($args, $in0, $in1+10);
+        $args = json_decode($argstext, true);
+
+        return array($args, $in0, $in1 + 10);
     }
 
     public function get_validation_error(array $response) {
@@ -87,37 +88,56 @@ class qtype_bebras_question extends qtype_shortanswer_question
         if (!array_key_exists('answer', $response) || is_null($response['answer'])) {
             return false;
         }
-        
-        $response_answer = $response['answer'];
 
-        // Remove scratch value from the answer
-        if(strpos($response_answer, "!!!!!")){
-            $response_answer = substr($response_answer,
-                                      0,
-                                      strpos($response_answer, "!!!!!"));
+        $responseanswer = $response['answer'];
+
+        // Remove scratch value from the answer.
+        if (strpos($responseanswer, "!!!!!")) {
+            $responseanswer = substr(
+                $responseanswer,
+                0,
+                strpos($responseanswer, "!!!!!")
+            );
         }
-        
-        return $this->is_correct($this->get_grader($this->questiontext)[0], $response_answer, $answer->answer);
+
+        return $this->is_correct($this->get_grader($this->questiontext)[0], $responseanswer, $answer->answer);
     }
-    
-    // We don't want e.g. the mathjax or link filter, so we disable all formatting filters by overriding the format_text function with the small change below.
-    public function format_text($text, $format, $qa, $component, $filearea, $itemid,
-            $clean = false) {
+
+    // We don't want e.g. the mathjax or link filter, so we disable all
+    // formatting filters by overriding the format_text function with the
+    // small change below.
+    public function format_text(
+        $text,
+        $format,
+        $qa,
+        $component,
+        $filearea,
+        $itemid,
+        $clean = false
+    ) {
         $formatoptions = new stdClass();
         $formatoptions->noclean = !$clean;
         $formatoptions->para = false;
-        // Disable all filters
+        // Disable all filters.
         $formatoptions->filter = false;
         $text = $qa->rewrite_pluginfile_urls($text, $component, $filearea, $itemid);
         return format_text($text, $format, $formatoptions);
     }
 
     public function get_correct_response() {
-        // Giving a correct answer doesn't currently work with these graders. Not sure about the Draggable grader in general. Also, not sure about ClickableSVG - Complex in the complicated form. "Lodge-Grader (1)" doesn't always work.
-        if(in_array($this->get_grader($this->questiontext)[0],
-            ["Lodge-Scratch-Grader", "BBS Task 2019"]))
+        // Giving a correct answer doesn't currently work with these graders.
+        // Not sure about the Draggable grader in general. Also, not sure
+        // about ClickableSVG - Complex in the complicated form.
+        // "Lodge-Grader (1)" doesn't always work.
+        if (
+            in_array(
+                $this->get_grader($this->questiontext)[0],
+                ["Lodge-Scratch-Grader", "BBS Task 2019"]
+            )
+        ) {
             return null;
-        
+        }
+
         return parent::get_correct_response();
     }
 }

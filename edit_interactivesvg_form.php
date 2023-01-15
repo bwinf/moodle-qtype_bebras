@@ -44,17 +44,27 @@ class qtype_bebras_edit_form extends question_edit_form {
             get_string('caseno', 'qtype_bebras'),
             get_string('caseyes', 'qtype_bebras')
         ];
-        $mform->addElement('select', 'usecase',
-                get_string('casesensitive', 'qtype_bebras'), $menu);
+        $mform->addElement(
+            'select',
+            'usecase',
+            get_string('casesensitive', 'qtype_bebras'),
+            $menu
+        );
         $mform->setDefault('usecase', $this->get_default_value('usecase', $menu[0]));
 
-        $mform->addElement('static', 'answersinstruct',
-                get_string('correctanswers', 'qtype_bebras'),
-                get_string('filloutoneanswer', 'qtype_bebras'));
+        $mform->addElement(
+            'static',
+            'answersinstruct',
+            get_string('correctanswers', 'qtype_bebras'),
+            get_string('filloutoneanswer', 'qtype_bebras')
+        );
         $mform->closeHeaderBefore('answersinstruct');
 
-        $this->add_per_answer_fields($mform, get_string('answerno', 'qtype_bebras', '{no}'),
-                question_bank::fraction_options());
+        $this->add_per_answer_fields(
+            $mform,
+            get_string('answerno', 'qtype_bebras', '{no}'),
+            question_bank::fraction_options()
+        );
 
         $this->add_interactive_settings();
     }
@@ -83,13 +93,15 @@ class qtype_bebras_edit_form extends question_edit_form {
                 if ($data['fraction'][$key] == 1) {
                     $maxgrade = true;
                 }
-            } else if ($data['fraction'][$key] != 0 ||
-                    !html_is_blank($data['feedback'][$key]['text'])) {
+            } else if (
+                $data['fraction'][$key] != 0 ||
+                !html_is_blank($data['feedback'][$key]['text'])
+            ) {
                 $errors["answeroptions[{$key}]"] = get_string('answermustbegiven', 'qtype_bebras');
                 $answercount++;
             }
         }
-        if ($answercount==0) {
+        if ($answercount == 0) {
             $errors['answeroptions[0]'] = get_string('notenoughanswers', 'qtype_bebras', 1);
         }
         if ($maxgrade == false) {

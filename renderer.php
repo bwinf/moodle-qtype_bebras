@@ -38,25 +38,27 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_bebras_renderer extends qtype_renderer {
-    private function get_task_creator(string $grader, ?string $currentanswer,
-                                      ?string $currentscratch, ?bool $can_save,
-                                      ?array $args) {
+    private function get_task_creator(
+        string $grader, ?string $currentanswer,
+        ?string $currentscratch, ?bool $cansave,
+        ?array $args
+    ) {
         $in = [
             'answer' => $currentanswer,
             'scratch' => $currentscratch,
-            'can_save' => $can_save
+            'can_save' => $cansave
         ];
         $mode = 'create_form';
         $graderfile = 'graders/' . $grader . '.grader.php';
-        if (!include $graderfile) {
+        if (!include($graderfile)) {
             die('Error: Grader missing');
         }
         return $out;
     }
-        
+
     private function iframe_encapsulate(string $srcdoc, string $id, bool $freeze) {
         $srcdoc = html_writer::tag('body', $srcdoc);
-        
+
         $biberiframeattributes = array(
             'id' => 'biber-iframe-' . $id,
             'srcdoc' => $srcdoc,
@@ -68,40 +70,46 @@ class qtype_bebras_renderer extends qtype_renderer {
         }
         $result = html_writer::tag('iframe', '', $biberiframeattributes);
 
-        $iframeresizer  = 'function ifrresizer(event) {'
-                        . 'let ifr = document.getElementById("biber-iframe-' . $id . '");'
-                        . 'if(ifr.style.height != ifr.contentWindow.document.documentElement.scrollHeight+"px")'
-                        . 'ifr.style.height = ifr.contentWindow.document.documentElement.scrollHeight+10+"px";'
-                        . '}';
-        $iframeresizerloader  = 'function(event) {'
-                        . $iframeresizer
-                        . 'let ifr = document.getElementById("biber-iframe-' . $id . '");'
-                        . 'ifr.contentWindow.addEventListener("resize",ifrresizer);'
-                        . 'ifrresizer();'
-                        . 'setTimeout(ifrresizer, 1000);'
-                        . '}';
-        $scr  = 'window.addEventListener("load", ' . $iframeresizerloader . ');';
+        $iframeresizer = 'function ifrresizer(event) {'
+            . 'let ifr = document.getElementById("biber-iframe-' . $id . '");'
+            . 'if(ifr.style.height != ifr.contentWindow.document.documentElement.scrollHeight+"px")'
+            . 'ifr.style.height = ifr.contentWindow.document.documentElement.scrollHeight+10+"px";'
+            . '}';
+        $iframeresizerloader = 'function(event) {'
+            . $iframeresizer
+            . 'let ifr = document.getElementById("biber-iframe-' . $id . '");'
+            . 'ifr.contentWindow.addEventListener("resize",ifrresizer);'
+            . 'ifrresizer();'
+            . 'setTimeout(ifrresizer, 1000);'
+            . '}';
+        $scr = 'window.addEventListener("load", ' . $iframeresizerloader . ');';
         $result .= html_writer::script($scr);
-        
+
         return $result;
     }
-        
-    public function formulation_and_controls(question_attempt $qa,
-            question_display_options $options) {
+
+    public function formulation_and_controls(
+        question_attempt $qa,
+        question_display_options $options
+    ) {
 
         $question = $qa->get_question();
         $currentanswer = $qa->get_last_qt_var('answer');
 
         $inputname = $qa->get_qt_field_name('answer');
 
-        // Remove scratch value from the answer and provide it separately
+        // Remove scratch value from the answer and provide it separately.
         $currentscratch = "";
-        if(strpos($currentanswer, "!!!!!")){
-            $currentscratch = substr($currentanswer,
-                                     strpos($currentanswer, "!!!!!")+5);
-            $currentanswer  = substr($currentanswer,
-                                     0,
-                                     strpos($currentanswer, "!!!!!"));
+        if (strpos($currentanswer, "!!!!!")) {
+            $currentscratch = substr(
+                $currentanswer,
+                strpos($currentanswer, "!!!!!") + 5
+            );
+            $currentanswer = substr(
+                $currentanswer,
+                0,
+                strpos($currentanswer, "!!!!!")
+            );
         }
 
         $inputattributes = array(
@@ -126,31 +134,37 @@ class qtype_bebras_renderer extends qtype_renderer {
         }
 
         $questiontext = $question->format_questiontext($qa);
-        
+
         list($grader, $in0, $in1) = $question->get_grader($questiontext);
         $questiontext = substr($questiontext, 0, $in0) . substr($questiontext, $in1);
-        
+
         list($args, $in0, $in1) = $question->get_args($questiontext);
         $questiontext = substr($questiontext, 0, $in0) . substr($questiontext, $in1);
 
         // Replace {TASK-CREATOR} in question text with the task creator
-        // generated by the .grader.php file
-        $questiontext = str_replace('{TASK-CREATOR}',
-                                    $this->get_task_creator($grader,
-                                                            $currentanswer,
-                                                            $currentanswer,
-                                                            !($options->correctness),
-                                                            $args),
-                                    $questiontext);
-        
+        // generated by the .grader.php file.
+        $questiontext = str_replace(
+            '{TASK-CREATOR}',
+            $this->get_task_creator(
+                $grader,
+                $currentanswer,
+                $currentanswer,
+                !($options->correctness),
+                $args
+            ),
+            $questiontext
+        );
+
         // This isn't pretty, but we have to replace @@PLUGINFILE@@/... in
-        // answers of 'Multiple Choice with Images' grader
-        $questiontext = $question->format_text($questiontext,
-                                               $question->questiontextformat,
-                                               $qa,
-                                               'question',
-                                               'questiontext',
-                                               $question->id);
+        // answers of 'Multiple Choice with Images' grader.
+        $questiontext = $question->format_text(
+            $questiontext,
+            $question->questiontextformat,
+            $qa,
+            'question',
+            'questiontext',
+            $question->id
+        );
 
         $inputinplace = $inputattributes['id'];
         $inputinplace = str_replace(':', '_', $inputinplace);
@@ -165,13 +179,17 @@ class qtype_bebras_renderer extends qtype_renderer {
             'readonly' => 'readonly',
         );
 
-        $input  = html_writer::empty_tag('input', $inputattributes) . $feedbackimg; 
+        $input = html_writer::empty_tag('input', $inputattributes) . $feedbackimg;
         $input .= html_writer::empty_tag('input', $scratchinputattributes);
 
         $srcdoc = $questiontext;
-        
-        if(!in_array($question->get_grader($questiontext)[0],
-            array("Open Integer", "Open Int 2019", "Open Question"))){
+
+        if (
+            !in_array(
+                $question->get_grader($questiontext)[0],
+                array("Open Integer", "Open Int 2019", "Open Question")
+            )
+        ) {
             $biberanswerfieldattributes = array(
                 'type' => 'hidden',
                 'name' => 'answer',
@@ -189,43 +207,49 @@ class qtype_bebras_renderer extends qtype_renderer {
             $srcdoc .= html_writer::empty_tag('input', $biberanswerfieldattributes);
             $srcdoc .= html_writer::empty_tag('input', $biberscratchfieldattributes);
         }
-        
+
         $result = $this->iframe_encapsulate($srcdoc, $inputinplace, $options->correctness);
         $result = html_writer::tag('div', $result, array('class' => 'qtext'));
 
         $result .= html_writer::start_tag('div', array('class' => 'ablock form-inline hidden'));
-        $result .= html_writer::tag('span', $input, array('class' => 'answer'),
-                array('for' => $inputattributes['id']));
+        $result .= html_writer::tag(
+            'span',
+            $input,
+            array('class' => 'answer'),
+            array('for' => $inputattributes['id'])
+        );
         $result .= html_writer::end_tag('div');
 
         if ($qa->get_state() == question_state::$invalid) {
-            $result .= html_writer::nonempty_tag('div',
-                    $question->get_validation_error(array('answer' => $currentanswer)),
-                    array('class' => 'validationerror'));
+            $result .= html_writer::nonempty_tag(
+                'div',
+                $question->get_validation_error(array('answer' => $currentanswer)),
+                array('class' => 'validationerror')
+            );
         }
 
         // NOTE This JS code needs getAnswer (and getScratch) to be defined
         // _globally_ in .grader.php. If it isn't already, e.g. because it's
         // part of a Task object, define it like e.g.
         // in 'Clickable SVG - Multi.grader.php'.
-        $answercatcher  = 'function(event) {';
+        $answercatcher = 'function(event) {';
         $answercatcher .= '  var refo = document.getElementById("responseform");'
-                        . '  if(refo){'
-                        . '    refo.addEventListener("submit", function() {'
-                        . '      console.log("Inserting answer... ");'
-                        . '      let ifrcW = document.getElementById("biber-iframe-' . $inputinplace . '").contentWindow;'
-                        . '      let answerfield = document.getElementById("' . $inputattributes['id'] . '");'
-                        . '      answerfield.value = ifrcW.getAnswer();'
-                        . '      if(ifrcW.getScratch){'
-                        . '        var scratch = ifrcW.getScratch();'
-                        . '        if(scratch){'
-                        . '          answerfield.value += "!!!!!" + scratch;'
-                        . '        }'
-                        . '      }'
-                        . '    });'
-                        . '  }'
-                        . '}';
-        
+            . '  if(refo){'
+            . '    refo.addEventListener("submit", function() {'
+            . '      console.log("Inserting answer... ");'
+            . '      let ifrcW = document.getElementById("biber-iframe-' . $inputinplace . '").contentWindow;'
+            . '      let answerfield = document.getElementById("' . $inputattributes['id'] . '");'
+            . '      answerfield.value = ifrcW.getAnswer();'
+            . '      if(ifrcW.getScratch){'
+            . '        var scratch = ifrcW.getScratch();'
+            . '        if(scratch){'
+            . '          answerfield.value += "!!!!!" + scratch;'
+            . '        }'
+            . '      }'
+            . '    });'
+            . '  }'
+            . '}';
+
         $scr = 'document.addEventListener("DOMContentLoaded", ' . $answercatcher . ');';
         $result .= html_writer::script($scr);
 
@@ -240,22 +264,27 @@ class qtype_bebras_renderer extends qtype_renderer {
             return '';
         }
 
-        return $question->format_text($answer->feedback, $answer->feedbackformat,
-                $qa, 'question', 'answerfeedback', $answer->id);
+        return $question->format_text(
+            $answer->feedback, $answer->feedbackformat,
+            $qa,
+            'question',
+            'answerfeedback', $answer->id
+        );
     }
 
     public function correct_response(question_attempt $qa) {
         return '';
     }
-    
+
     protected function general_feedback(question_attempt $qa) {
         $feedback = $qa->get_question()->format_generalfeedback($qa);
-        if(!$feedback)
+        if (!$feedback) {
             return '';
-        
+        }
+
         $ifrid = $qa->get_qt_field_name('answer');
         $ifrid = str_replace(':', '_', $ifrid);
         $ifrid .= '-explanation';
-        return $this->iframe_encapsulate($feedback, $ifrid, False);
+        return $this->iframe_encapsulate($feedback, $ifrid, false);
     }
 }
