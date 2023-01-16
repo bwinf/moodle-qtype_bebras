@@ -17,7 +17,7 @@
 /**
  * Question type class for the bebras question type.
  *
- * @package    qtype
+ * @package    qtype_bebras
  * @subpackage bebras
  * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @copyright  2021 BWINF

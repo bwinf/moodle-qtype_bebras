@@ -57,6 +57,14 @@ class qtype_bebras_question extends qtype_shortanswer_question implements questi
         return $out == 'correct';
     }
 
+    /**
+     * Gives the name of the Bebras grader
+     *
+     * The questiontext is parsed to find the .grader.php filename (without the extension).
+     * It is returned along with its position in the questiontext.
+     *
+     * @return array(string, int, int)
+     */
     public function get_grader(string $questiontext) {
         // Parse grader.
         $in0 = strpos($questiontext, "{GRADER-START}");
@@ -66,6 +74,14 @@ class qtype_bebras_question extends qtype_shortanswer_question implements questi
         return array($grader, $in0, $in1 + 12);
     }
 
+    /**
+     * Gives the Bebras question's arguments
+     *
+     * The questiontext is parsed to find the JSON dump containing the question's arguments.
+     * It is returned along with its position in the questiontext.
+     *
+     * @return array(mixed, int, int)
+     */
     public function get_args(string $questiontext) {
         // Parse arguments.
         $in0 = strpos($questiontext, "{ARGS-START}");

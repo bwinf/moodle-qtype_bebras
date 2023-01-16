@@ -38,6 +38,14 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_bebras_renderer extends qtype_renderer {
+    /**
+     * Gives the code of the Bebras question's grader that creates a form
+     *
+     * The code returned creates what constitutes the basic part of the
+     * interaction of the user with the task
+     *
+     * @return string
+     */
     private function get_task_creator(
         string $grader, ?string $currentanswer,
         ?string $currentscratch, ?bool $cansave,
@@ -56,6 +64,21 @@ class qtype_bebras_renderer extends qtype_renderer {
         return $out;
     }
 
+    /**
+     * Encapsulates HTML code inside an iframe
+     *
+     * Returns code that encapsulates $srcdoc inside an iframe that can be accessed
+     * with the HTML id biber-iframe-$id.
+     *
+     * The iframe is automatically resized after loading using JS to fit the content
+     * inside. As a fallback, it is again resized 1s after loading as with some of
+     * the existing libraries, and unpredictably, content gets loaded after the fact.
+     *
+     * If $freeze is true, the user is kept from interacting with (clicking,
+     * dragging, etc. inside the) iframe.
+     *
+     * @return string
+     */
     private function iframe_encapsulate(string $srcdoc, string $id, bool $freeze) {
         $srcdoc = html_writer::tag('body', $srcdoc);
 
