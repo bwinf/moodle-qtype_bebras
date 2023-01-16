@@ -44,7 +44,12 @@ class qtype_bebras_renderer extends qtype_renderer {
      * The code returned creates what constitutes the basic part of the
      * interaction of the user with the task
      *
-     * @return string
+     * @param string $grader The name of the grader (sans the .grader.php extension)
+     * @param ?string $currentanswer The most recent (encoded) answer given by the user
+     * @param ?string $currentscratch The most recent scratch value left by the user
+     * @param ?bool $cansave Whether the user can attempt to solve the question now
+     * @param ?array $args The arguments (from a JSON dump) that should be given to the grader
+     * @return string The (HTML) code that constitutes the basic interactive part of the question
      */
     private function get_task_creator(
         string $grader, ?string $currentanswer,
@@ -77,7 +82,10 @@ class qtype_bebras_renderer extends qtype_renderer {
      * If $freeze is true, the user is kept from interacting with (clicking,
      * dragging, etc. inside the) iframe.
      *
-     * @return string
+     * @param string $srcdoc The HTML code to be encapsulated in an iframe
+     * @param string $id A unique ID for the resulting iframe
+     * @param bool $freeze Whether interaction with the content should be allowed
+     * @return string The resulting iframe
      */
     private function iframe_encapsulate(string $srcdoc, string $id, bool $freeze) {
         $srcdoc = html_writer::tag('body', $srcdoc);

@@ -63,7 +63,8 @@ class qtype_bebras_question extends qtype_shortanswer_question implements questi
      * The questiontext is parsed to find the .grader.php filename (without the extension).
      * It is returned along with its position in the questiontext.
      *
-     * @return array(string, int, int)
+     * @param string $questiontext The raw questiontext that contains the grader info section
+     * @return array The name of the grader, and the start and end index of the grader section in the questiontext
      */
     public function get_grader(string $questiontext) {
         // Parse grader.
@@ -80,7 +81,8 @@ class qtype_bebras_question extends qtype_shortanswer_question implements questi
      * The questiontext is parsed to find the JSON dump containing the question's arguments.
      * It is returned along with its position in the questiontext.
      *
-     * @return array(mixed, int, int)
+     * @param string $questiontext The raw questiontext that contains the grader args section
+     * @return array The arguments for the question, and the start and end index of the args section in the questiontext
      */
     public function get_args(string $questiontext) {
         // Parse arguments.
