@@ -282,6 +282,34 @@ class qtype_bebras_renderer extends qtype_renderer {
             . '}';
 
         $scr = 'document.addEventListener("DOMContentLoaded", ' . $answercatcher . ');';
+
+        // Modified width of Moodle quiz layout.
+        $scr .= <<<EOD
+        if(!document.getElementById('css_for_bebras_width')){
+            var css = `
+            @media (min-width: 768px) {
+                #page-header {
+                    max-width: 953.5px !important;
+                }
+
+                .secondary-navigation {
+                    max-width: 953.5px !important;
+                }
+
+                .pagelayout-standard #page.drawers .main-inner,
+                body.limitedwidth #page.drawers .main-inner {
+                    max-width: 953.5px !important;
+                }
+            }`;
+
+            var style = document.createElement('style');
+            document.head.appendChild(style);
+            style.type = 'text/css';
+            style.id = 'css_for_bebras_width';
+            style.appendChild(document.createTextNode(css));
+        }
+        EOD;
+
         $result .= html_writer::script($scr);
 
         return $result;
